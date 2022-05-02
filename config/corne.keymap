@@ -31,12 +31,6 @@
 };
 
 / {
-	chosen {
-		zmk,underglow = &led_strip;
-	};
-};
-
-/ {
     conditional_layers {
         compatible = "zmk,conditional-layers";
         THREE {
