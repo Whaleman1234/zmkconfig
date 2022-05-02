@@ -7,8 +7,8 @@
 #define DEFAULT  0
 #define LOWER    1
 #define RAISE    2
-#define THREE    3
-#define GAMER    4
+#define GAMER    3
+#define LOCK     4
 
 
 #include <behaviors.dtsi>
@@ -33,9 +33,9 @@
 / {
     conditional_layers {
         compatible = "zmk,conditional-layers";
-        THREE {
+        LOCK {
             if-layers = <1 2>;
-            then-layer = <3>;
+            then-layer = <4>;
         };
     };
 };
@@ -100,14 +100,14 @@
                         >;
                 };
 		
-		THREE {
+		LOCK {
 // -----------------------------------------------------------------------------------------
 // |CTSFE|     |     |     |     |K_PWR |   | C_PWR|     |     |     |GAMER|CTALD|
 // |VOLUP|VOLDN|CMUTE|CBRUP|CBRDN| CPP  |   | BT0  | BT1 | BT2 | BT3 |BTNXT|BTCLR|
 // |     |     |     |     |     |      |   |      |     |     |     |EPTOG|     |
 //                   |     | LWR | RAI  |   |      |     |     |
                         bindings = <
-    &kp LC(LS(ESC)) &none        &none      &none        &none        &kp K_PWR          &kp C_PWR    &none        &none        &none       &tog GAMER        &kp LC(LA(DEL)) 
+    &kp LC(LS(ESC)) &none        &none      &none        &none        &kp K_PWR          &kp C_PWR    &none        &none        &none       &to GAMER        &kp LC(LA(DEL)) 
     &kp C_VOL_UP    &kp C_VOL_DN &kp C_MUTE &kp C_BRI_UP &kp C_BRI_DN &kp C_PP           &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_NXT        &bt BT_CLR
     &none           &none        &none      &none        &none        &none              &rgb_ug RGB_TOG        &rgb_ug RGB_EFF &none        &none        &ext_power EP_TOG &none
                                             &none        &mo LOWER    &lt RAISE SPACE    &none        &none        &none
