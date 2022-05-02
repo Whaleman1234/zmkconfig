@@ -3,10 +3,63 @@
  *
  * SPDX-License-Identifier: MIT
  */
+ 
+#define DEFAULT  0
+#define LOWER    1
+#define RAISE    2
+#define THREE    3
+#define GAMER    4
+
 
 #include <behaviors.dtsi>
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/outputs.h>
+
+
+
+&spi1 {
+	compatible = "nordic,nrf-spim";
+	/* Cannot be used together with i2c0. */
+	status = "okay";
+	mosi-pin = <6>;
+	// Unused pins, needed for SPI definition, but not used by the ws2812 driver itself.
+	sck-pin = <5>;
+	miso-pin = <7>;
+
+	led_strip: ws2812@0 {
+		compatible = "worldsemi,ws2812-spi";
+		label = "SK6812mini";
+
+		/* SPI */
+		reg = <0>; /* ignored, but necessary for SPI bindings */
+		spi-max-frequency = <4000000>;
+
+		/* WS2812 */
+		chain-length = <27>; /* There are per-key RGB, but the first 6 are underglow */
+		spi-one-frame = <0x70>;
+		spi-zero-frame = <0x40>;
+	};
+};
+
+/ {
+	chosen {
+		zmk,underglow = &led_strip;
+	};
+};
+
+/ {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        THREE {
+            if-layers = <1 2>;
+            then-layer = <3>;
+        };
+    };
+};
+
 
 / {
         keymap {
@@ -14,42 +67,70 @@
 
                 default_layer {
 // -----------------------------------------------------------------------------------------
-// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BKSP |
-// | CTRL |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  |  '   |
-// | SHFT |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | ESC  |
-//                    | GUI | LWR | SPC |   | ENT | RSE  | ALT |
+// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BSPC |
+// | SHFT |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  | '    |
+// | CTRL |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | RET  |
+//                    | LALT| LWR | RAI |   | SHFT| SPC  | TAB |
                         bindings = <
-   &kp TAB   &kp Q &kp W &kp E &kp R &kp T   &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-   &kp LCTRL &kp A &kp S &kp D &kp F &kp G   &kp H &kp J  &kp K     &kp L   &kp SEMI &kp SQT
-   &kp LSHFT &kp Z &kp X &kp C &kp V &kp B   &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp ESC
-                  &kp LGUI &mo 1 &kp SPACE   &kp RET &mo 2 &kp RALT
+   &kp TAB   &kp Q &kp W &kp E &kp R      &kp T     &kp Y            &kp U           &kp I           &kp O   &kp P    &kp BSPC
+   &kp LSHFT &kp A &kp S &kp D &kp F      &kp G     &kp H            &kp J           &kp K           &kp L   &kp SEMI &mt SQT RET
+   &kp LCTRL &kp Z &kp X &kp C &kp V      &kp B     &kp N            &kp M           &kp COMMA       &kp DOT &kp FSLH &kp RET
+                               &kp LSHIFT &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp TAB
                         >;
                 };
-                lower_layer {
+                LOWER {
 // -----------------------------------------------------------------------------------------
-// |  TAB |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  | BKSP |
-// | BTCLR| BT1 | BT2 | BT3 | BT4 | BT5 |   | LFT | DWN |  UP | RGT |     |      |
-// | SHFT |     |     |     |     |     |   |     |     |     |     |     |      |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// | ESC  |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  | BSPC| DEL | UP  |
+// | CAPS |  {  |  [  |  (  |  -  |  `  |   |  \  |  _  |  )  |  ]  |  }  | DOWN|
+// | CTRL |  "  |  +  |LC(C)|LC(V)|BTNXT|   | "|" |  /  |  =  |  ?  | LEFT|RIGHT|
+//                    | LALT| LWR | RAI |   | SHFT| SPC | RET |
                         bindings = <
-   &kp TAB    &kp N1       &kp N2       &kp N3       &kp N4       &kp N5         &kp N6   &kp N7   &kp N8 &kp N9    &kp N0 &kp BSPC
-   &bt BT_CLR &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4   &kp LEFT &kp DOWN &kp UP &kp RIGHT &trans &trans
-   &kp LSHFT  &trans       &trans       &trans       &trans       &trans         &trans   &trans   &trans &trans    &trans &trans
-                          	        &kp LGUI     &trans       &kp SPACE      &kp RET  &trans   &kp RALT
+   &kp ESC   &kp EXCL &kp AT   &kp POUND   &kp DLLR  &kp PRCNT    &kp CARET &kp AMPS  &kp STAR    &kp BSPC  &kp DEL  &kp UP
+   &kp CAPS  &kp LBRC &kp LBKT &kp LPAR    &kp MINUS &kp GRAVE    &kp BSLH  &kp UNDER &kp RPAR &kp RBKT  &kp RBRC &kp DOWN
+   &kp LCTRL &kp DQT  &kp PLUS &kp LC(C)   &kp LC(V) &bt BT_NXT   &kp PIPE  &kp FSLH  &kp EQUAL   &kp QMARK &kp LEFT &kp RIGHT
+                               &kp LALT     &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp RET
                         >;
                 };
 
-                raise_layer {
+                RAISE { 
 // -----------------------------------------------------------------------------------------
-// |  TAB |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  (  |  )  | BKSP |
-// | CTRL |     |     |     |     |     |   |  -  |  =  |  [  |  ]  |  \  |  `   |
-// | SHFT |     |     |     |     |     |   |  _  |  +  |  {  |  }  | "|" |  ~   |
-//                    | GUI |     | SPC |   | ENT |     | ALT |
+// | F1  |  F2 |  F3 |  F4 |  F5 |  F6 |   |  F7  |  F8 |  F9 | F10 | F11 | F12 |
+// |     |  1  |  2  |  3  |  4  |  5  |   |  6   |  7  |  8  |  9  |  0  |LWIN |
+// |     |     |     |     |     |     |   |      |     |     |     |PGUP |PGDN |
+//                   | LALT| LWR | RAI |   | SHFT | SPC | BSPC|
                         bindings = <
-   &kp  TAB  &kp EXCL &kp AT &kp HASH &kp DLLR &kp PRCNT   &kp CARET &kp AMPS  &kp KP_MULTIPLY &kp LPAR &kp RPAR &kp BSPC
-   &kp LCTRL &trans   &trans &trans   &trans   &trans      &kp MINUS &kp EQUAL &kp LBKT        &kp RBKT &kp BSLH &kp GRAVE
-   &kp LSHFT &trans   &trans &trans   &trans   &trans      &kp UNDER &kp PLUS  &kp LBRC        &kp RBRC &kp PIPE &kp TILDE
-                    	     &kp LGUI &trans   &kp SPACE   &kp RET   &trans    &kp RALT
+   &kp F1 &kp F2 &kp F3   &kp F4   &kp F5    &kp F6            &kp F7    &kp F8    &kp F9   &kp F10 &kp F11   &kp F12 
+   &none  &kp N1 &kp N2   &kp N3   &kp N4    &kp N5            &kp N6    &kp N7    &kp N8   &kp N9  &kp N0    &kp LWIN
+   &none  &none  &kp C_PP &none    &none     &none             &none     &none     &none    &none   &kp PG_UP &kp PG_DN
+                    	  &kp LALT     &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp BSPC
+                        >;
+                };
+		
+		GAMER {
+// -----------------------------------------------------------------------------------------
+// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BSPC |
+// | SHFT |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  | '    |
+// | CTRL |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | RET  |
+//                    | LALT| LWR |SPC  |   | SHFT| SPC  | TAB |
+                        bindings = <
+   &kp TAB   &kp Q &kp W &kp E &kp R      &kp T     &kp Y            &kp U           &kp I           &kp O   &kp P    &kp BSPC
+   &kp LSHFT &kp A &kp S &kp D &kp F      &kp G     &kp H            &kp J           &kp K           &kp L   &kp SEMI &mt SQT RET
+   &kp LCTRL &kp Z &kp X &kp C &kp V      &kp B     &kp N            &kp M           &kp COMMA       &kp DOT &kp FSLH &kp RET
+                               &kp N1 &mt LOWER SPACE &kp SPACE  &kp LSHFT &kp SPACE &tog GAMER
+                        >;
+                };
+		
+		THREE {
+// -----------------------------------------------------------------------------------------
+// |CTSFE|     |     |     |     |K_PWR |   | C_PWR|     |     |     |GAMER|CTALD|
+// |VOLUP|VOLDN|CMUTE|CBRUP|CBRDN| CPP  |   | BT0  | BT1 | BT2 | BT3 |BTNXT|BTCLR|
+// |     |     |     |     |     |      |   |      |     |     |     |EPTOG|     |
+//                   |     | LWR | RAI  |   |      |     |     |
+                        bindings = <
+    &kp LC(LS(ESC)) &none        &none      &none        &none        &kp K_PWR          &kp C_PWR    &none        &none        &none       &tog GAMER        &kp LC(LA(DEL)) 
+    &kp C_VOL_UP    &kp C_VOL_DN &kp C_MUTE &kp C_BRI_UP &kp C_BRI_DN &kp C_PP           &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_NXT        &bt BT_CLR
+    &none           &none        &none      &none        &none        &none              &rgb_ug RGB_TOG        &rgb_ug RGB_EFF &none        &none        &ext_power EP_TOG &none
+                                            &none        &mo LOWER    &lt RAISE SPACE    &none        &none        &none
                         >;
                 };
         };
