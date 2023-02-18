@@ -30,11 +30,7 @@
         miso-pin = <7>;
 };
 
-/ {
-	chosen {
-		zmk,underglow = &led_strip;
-	};
-};
+
 
 / {
     conditional_layers {
