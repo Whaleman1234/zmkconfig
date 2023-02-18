@@ -78,22 +78,22 @@
 //                    | LALT| LWR | RAI |   | SHFT| SPC  | TAB |
                         bindings = <
    &kp TAB   &kp Q &kp W &kp E &kp R      &kp T     &kp Y            &kp U           &kp I           &kp O   &kp P    &kp BSPC
-   &kp LSHFT &kp A &kp S &kp D &kp F      &kp G     &kp H            &kp J           &kp K           &kp L   &kp SEMI &mt SQT RET
+   &kp LSHFT &kp A &kp S &kp D &kp F      &kp G     &kp H            &kp J           &kp K           &kp L   &kp SEMI &kp SQT
    &kp LCTRL &kp Z &kp X &kp C &kp V      &kp B     &kp N            &kp M           &kp COMMA       &kp DOT &kp FSLH &kp RET
-                               &kp LSHIFT &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp TAB
+                               &kp ALT &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp TAB
                         >;
                 };
                 LOWER {
 // -----------------------------------------------------------------------------------------
-// | ESC  |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |     | DEL | BSPC|
-// | CAPS |  {  |  [  |  (  |  -  |  `  |   |  \  |  _  |  )  |  ]  |  }  | DOWN|
+// | ESC  |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |  ~  | DEL | BSPC|
+// | CAPSW|  {  |  [  |  (  |  -  |  `  |   |  \  |  _  |  )  |  ]  |  }  | DOWN|
 // | CTRL |  "  |  +  |LC(C)|LC(V)|BTNXT|   | "|" |  /  |  =  |  ?  | LEFT|RIGHT|
 //                    | LALT| LWR | RAI |   | SHFT| SPC | RET |
                         bindings = <
-   &kp ESC   &kp EXCL &kp AT   &kp POUND   &kp DLLR  &kp PRCNT    &kp CARET &kp AMPS  &kp STAR    &none  &kp DEL  &kp BSPC
-   &caps_word  &kp LBRC &kp LBKT &kp LPAR    &kp MINUS &kp GRAVE    &kp BSLH  &kp UNDER &kp RPAR &kp RBKT  &kp RBRC &kp DOWN
-   &kp LCTRL &kp DQT  &kp PLUS &kp LC(C)   &kp LC(V) &bt BT_NXT   &kp PIPE  &kp FSLH  &kp EQUAL   &kp QMARK &kp LEFT &kp RIGHT
-                               &kp LALT     &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp RET
+   &kp ESC   &kp EXCL &kp AT   &kp POUND   &kp DLLR  &kp PRCNT    &kp CARET &kp AMPS  &kp STAR    &kp TILDE  &kp DEL  &kp BSPC
+   &caps_word  &kp LBRC &kp LBKT &kp LPAR    &kp MINUS &kp GRAVE    &kp BSLH  &kp UNDER &kp RPAR &kp RBKT  &kp RBRC &none
+   &kp LCTRL &kp DQT  &PLUS &trans   &trans &bt BT_NXT   &kp PIPE  &kp FSLH  &kp EQUAL   &kp QMARK &kp LEFT &none
+                               &kp LCTRL     &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp RET
                         >;
                 };
 
@@ -102,26 +102,26 @@
 // | F1  |  F2 |  F3 |  F4 |  F5 |  F6 |   |  F7  |  F8 |  F9 | F10 | F11 | F12 |
 // |     |  1  |  2  |  3  |  4  |  5  |   |  6   |  7  |  8  |  9  |  0  |LWIN |
 // |     |     |     |     |     |     |   |      |     |     |     |PGUP |PGDN |
-//                   | LALT| LWR | RAI |   | SHFT | SPC | BSPC|
+//                   |LCTRL| LWR | RAI |   | SHFT | SPC | BSPC|
                         bindings = <
-   &kp F1 &kp F2 &kp F3   &kp F4   &kp F5    &kp F6            &kp F7    &kp F8    &kp F9   &kp F10 &kp F11   &kp F12 
-   &none  &kp N1 &kp N2   &kp N3   &kp N4    &kp N5            &kp N6    &kp N7    &kp N8   &kp N9  &kp N0    &kp LWIN
-   &none  &none  &kp C_PP &none    &none     &none             &none     &none     &none    &none   &kp PG_UP &kp PG_DN
-                    	  &kp LALT     &mo LOWER &lt RAISE SPACE  &mt LSHFT SPACE &kp SPACE &kp BSPC
+   &kp F1 &kp F2 &kp F3    &kp F4    &kp F5     &kp F6                 &kp F7    &kp F8    &kp F9   &kp F10 &kp F11   &kp F12 
+   &none  &kp N1 &kp N2    &kp N3    &kp N4     &kp N5                 &kp N6    &kp N7    &kp N8   &kp N9  &kp N0    &kp LWIN
+   &none  &none  &kp C_PP  &none     &none      &none                  &none     &none     &none    &none   &kp PG_UP &kp PG_DN
+                    	   &kp LALT  &mo LOWER  &lt RAISE SPACE        &mt LSHFT SPACE &kp SPACE &kp BSPC
                         >;
                 };
 		
 		GAMER {
 // -----------------------------------------------------------------------------------------
-// |  TAB |  Q  |  W  |  E  |  R  |  T  |   |  Y  |  U   |  I  |  O  |  P  | BSPC |
-// | SHFT |  A  |  S  |  D  |  F  |  G  |   |  H  |  J   |  K  |  L  |  ;  | '    |
-// | CTRL |  Z  |  X  |  C  |  V  |  B  |   |  N  |  M   |  ,  |  .  |  /  | RET  |
-//                    | LALT| LWR |SPC  |   | SHFT| SPC  | TAB |
+// | 1    | TAB |  Q  |  W  |  E  |  R  |   |  T  |  Y   |  U  |  I  |  O  | P    |
+// | 2    |SHIFT|  A  |  S  |  D  |  F  |   |  G  |  H   |  J  |  L  |  ;  |      |
+// | 3    |LCTRL|  Z  |  X  |  C  |  V  |   |  B  |  N   |  M  |  M  |  /  | RET  |
+//                    |RAISE| LWR |SPC  |   | SHFT| SPC  | TAB |
                         bindings = <
-   &kp TAB   &kp Q &kp W &kp E &kp R      &kp T     &kp Y            &kp U           &kp I           &kp O   &kp P    &kp BSPC
-   &kp LSHFT &kp A &kp S &kp D &kp F      &kp G     &kp H            &kp J           &kp K           &kp L   &kp SEMI &mt SQT RET
-   &kp LCTRL &kp Z &kp X &kp C &kp V      &kp B     &kp N            &kp M           &kp COMMA       &kp DOT &kp FSLH &kp RET
-                               &kp N1 &mt LOWER SPACE &kp SPACE  &kp LSHFT &kp SPACE &tog GAMER
+   &kp N1  &kp TAB     &kp Q  &kp W     &kp E  &kp R    &kp T        &kp Y      &kp U      &kp I       &kp O     &kp P
+   &kp N2  &kp LSHIFT  &kp A  &kp S     &kp D  &kp F    &kp G        &kp H      &kp J      &kp K       &kp L     &none
+   &kp N3  &kp LCTRL   &kp Z  &kp X     &kp C  &kp V    &kp B        &kp N      &kp M      &kp M       &kp FSLH  &kp RET
+                              &mo RAISE &mt LOWER SPACE &kp SPACE    &kp RSHFT  &mt LOWER  &tog GAMER
                         >;
                 };
 		
@@ -129,13 +129,13 @@
 // -----------------------------------------------------------------------------------------
 // |CTSFE|     |     |     |     |K_PWR |   | C_PWR|     | UP  |     |GAMER|CTALD|
 // |VOLUP|VOLDN|CMUTE|CBRUP|CBRDN| CPP  |   | BT0  | LFT | DWN | RHT |BTNXT|BTCLR|
-// |     |     |     |     |     |      |   |      |     |     |     |EPTOG|     |
-//                   |     | LWR | RAI  |   |      |     |     |
+// |     |     |     |     |OUTUSB|OUTBLE|   |RGBTOG|     |     |     |     |     |
+//                   |EP_ON| LWR | RAI  |   |RGBEFF|     |     |
                         bindings = <
-    &kp LC(LS(ESC)) &none        &none      &none        &none        &kp K_PWR          &kp C_PWR    &none        &kp UP        &none       &to GAMER        &kp LC(LA(DEL)) 
-    &kp C_VOL_UP    &kp C_VOL_DN &kp C_MUTE &kp C_BRI_UP &kp C_BRI_DN &kp C_PP           &bt BT_SEL 0 &kp LEFT &kp DOWN &kp RIGHT &bt BT_NXT        &bt BT_CLR
-    &none           &none        &none      &none        &none        &none              &rgb_ug RGB_TOG        &rgb_ug RGB_EFF &none        &none        &ext_power EP_TOG &none
-                                            &none        &mo LOWER    &lt RAISE SPACE    &none        &none        &none
+    &kp LC(LS(ESC))  &none         &none       &none             &none         &kp K_PWR          &kp C_PWR        &none     &kp UP   &none     &to GAMER   &kp LC(LA(DEL)) 
+    &kp C_VOL_UP     &kp C_VOL_DN  &kp C_MUTE  &kp C_BRI_UP      &kp C_BRI_DN  &kp C_PP           &bt BT_SEL 0     &kp LEFT  &kp DOWN &kp RIGHT &bt BT_NXT  &bt BT_CLR
+    &none            &none         &none       &none             &out OUT_USB  &out OUT_BLE       &rgb_ug RGB_TOG  &none     &none    &none     &none       &none
+                                               &ext_power EP_ON  &mo LOWER     &lt RAISE SPACE    &rgb_ug RGB_EFF  &none     &none
                         >;
                 };
         };
