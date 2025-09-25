@@ -124,7 +124,7 @@
                         bindings = <
    &kp Y    &kp N7  &kp N8  &kp N9  &kp N0  &kp P      &none  &none  &none  &none  &none  &none
    &kp H    &kp N1  &kp N2  &kp N3  &none   &kp J      &none  &none  &none  &none  &none  &none
-   &kp ALT  &kp N4  &kp N5  &kp N6  &kp I   &kp M      &none  &none  &none  &none  &none  &none
+   &kp LALT  &kp N4  &kp N5  &kp N6  &kp I   &kp M      &none  &none  &none  &none  &none  &none
                             &none   &none   &none      &none  &none  &none
                         >;
                 };
