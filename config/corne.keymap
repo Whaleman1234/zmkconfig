@@ -80,10 +80,10 @@
 // |LCTRL |     |     |     |     |     |   |  /  | "|" |HOME | END |PSCRN|     |
 //                    | LALT| LWR | RAI |   |SPACE|SPACE|     |
                         bindings = <
-   &kp GRAVE  &kp EXCL  &kp AT    &kp POUND  &kp DLLR   &kp PRCNT      &kp CARET  &kp AMPS   &kp STAR  &none     &kp EQUAL  &kp DEL
-   &kp CAPS   &kp LBRC  &kp LBKT  &kp LPAR   &kp MINUS  &kp GRAVE      &kp BSLH   &kp UNDER  &kp RPAR  &kp RBKT  &kp RBRC   &kp KP_ENTER
-   &kp LCTRL   &none     &none     &none      &none      &none         &kp FSLH   &none      &kp HOME  &kp END   &kp PSCRN  &none
-                                  &kp LALT   &mo LOWER  &mo RAISE      &kp SPACE  &kp SPACE  &none
+   &kp GRAVE  &kp EXCL  &kp AT    &kp POUND  &kp DLLR   &kp PRCNT      &kp CARET   &kp AMPS   &kp STAR  &none     &kp EQUAL  &kp DEL
+   &kp CAPS   &kp LBRC  &kp LBKT  &kp LPAR   &kp MINUS  &kp GRAVE      &kp BSLH    &kp UNDER  &kp RPAR  &kp RBKT  &kp RBRC   &kp KP_ENTER
+   &kp LCTRL   &none     &none     &none      &none      &none         &kp FSLH    &none      &kp HOME  &kp END   &kp PSCRN  &none
+                                  &kp LALT   &mo LOWER  &mo RAISE      &kp LSHIFT  &kp SPACE  &none
                         >;
                 };
 
