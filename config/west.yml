@@ -2,7 +2,7 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/Whaleman1234
-    - name: crystalplanet
+    - name: Whaleman1234
       url-base: https://github.com/Whaleman1234
   projects:
     - name: zmk
