@@ -1,1 +1,195 @@
+/*
+ * Copyright (c) 2020 The ZMK Contributors
+ *
+ * SPDX-License-Identifier: MIT
+ */
+ 
+#define DEFAULT  0
+#define LOWER    1
+#define RAISE    2
+#define GAMER1   3
+#define GAMER2	 4
+#define LOCK     5
 
+
+#include <behaviors.dtsi>
+#include <dt-bindings/zmk/keys.h>
+#include <dt-bindings/zmk/bt.h>
+#include <dt-bindings/zmk/rgb.h>
+#include <dt-bindings/zmk/ext_power.h>
+#include <dt-bindings/zmk/outputs.h>
+#include <dt-bindings/led/led.h>
+#include <dt-bindings/zmk/rgb_fx.h>
+#include <zmk-rgb-fx/dts/rgb_fx.dtsi>
+
+
+&spi3 {
+
+  led_strip: ws2812@0 {
+    compatible = "worldsemi,ws2812-spi";
+
+    /* SPI */
+    reg = <0>; /* ignored, but necessary for SPI bindings */
+    spi-max-frequency = <4000000>;
+
+    /* WS2812 */
+    chain-length = <54>; /* number of LEDs */
+    spi-one-frame = <0x70>; /* make sure to configure this properly for your SOC */
+    spi-zero-frame = <0x40>; /* make sure to configure this properly for your SOC */
+    color-mapping = <LED_COLOR_ID_GREEN
+                          LED_COLOR_ID_RED
+                          LED_COLOR_ID_BLUE>;
+  };
+};
+/ {
+    chosen {
+        zmk,underglow = &led_strip;
+    };
+};
+
+/ {
+    conditional_layers {
+        compatible = "zmk,conditional-layers";
+        LOCK {
+            if-layers = <1 2>;
+            then-layer = <5>;
+        };
+    };
+};
+
+/ {
+    // Define your pixel positions (x, y coordinates)
+    // Adjust these for your actual LED layout
+    chosen {
+        zmk,rgb-fx = &rgb_fx_root;
+    };
+
+    rgb_fx_root: rgb_fx {
+        compatible = "zmk,rgb-fx";
+        label = "RGB_FX";
+        
+        // Your LED strip driver
+        drivers = <&led_strip>;
+        chain-lengths = <54>;  // Or 27 if mirrored
+        
+        // Map key positions to pixels
+        key-pixels = <>;
+
+		// Define pixel positions - adjust x,y for your layout
+        pixels = <&pixel 0 0>, <&pixel 10 0>, <&pixel 20 0>;  // ... continue for all LEDs
+    };
+
+    // Define heatmap effect
+    heatmap_effect: heatmap_effect {
+        compatible = "zmk,rgb-fx-heatmap";
+        label = "HEATMAP";
+        
+        pixels = <0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20
+                  21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41>;
+        
+        color-cold-hue = <240>;  // Blue for unused keys
+        color-hot-hue = <0>;     // Red for most-used keys
+        saturation = <100>;
+        lightness = <50>;
+        blending-mode = "normal";
+    };
+
+    // Control group to manage effects
+    rgb_control: rgb_control_group {
+        compatible = "zmk,rgb-fx-control-group";
+        label = "RGB_CONTROL";
+        
+        fx = <&heatmap_effect>;  // Add other effects here too
+        brightness-steps = <5>;
+    };
+};
+
+
+/ {
+        keymap {
+                compatible = "zmk,keymap";
+
+                default_layer {
+// -----------------------------------------------------------------------------------------
+// | ESC  |  Q  |  W  |  E  |  R  |  T  |   |  Y   |  U   |  I  |  O  |  P  | BSPC |
+// | TAB  |  A  |  S  |  D  |  F  |  G  |   |  H   |  J   |  K  |  L  |  ;  | RET  |
+// |LCTRL |  Z  |  X  |  C  |  V  |  B  |   |  N   |  M   |  ,  |  .  |  /  | '    |
+//                    | LALT| LWR |RAISP|   |SHFTSP|SPACE | LWIN |
+                        bindings = <
+   &kp ESC    &kp Q  &kp W  &kp E     &kp R      &kp T                &kp Y            &kp U      &kp I      &kp O    &kp P     &kp BSPC
+   &kp TAB    &kp A  &kp S  &kp D     &kp F      &kp G                &kp H            &kp J      &kp K      &kp L    &kp SEMI  &kp RET
+   &kp LCTRL  &kp Z  &kp X  &kp C     &kp V      &kp B                &kp N            &kp M      &kp COMMA  &kp DOT  &kp FSLH  &kp SQT
+                            &kp LALT  &mo LOWER  &lt RAISE SPACE      &mt LSHFT SPACE  &kp SPACE  &kp LWIN
+                         >;
+                };
+                LOWER {
+// -----------------------------------------------------------------------------------------
+// |  `   |  !  |  @  |  #  |  $  |  %  |   |  ^  |  &  |  *  |     |  =  | DEL |
+// | CAPS |  {  |  [  |  (  |  -  |  `  |   |  \  |  _  |  )  |  ]  |  }  |ENTER|
+// |LCTRL |     |     |     |     |     |   |  /  | "|" |HOME | END |PSCRN|     |
+//                    | LALT| LWR | RAI |   |SPACE|SPACE|     |
+                        bindings = <
+   &kp GRAVE  &kp EXCL  &kp AT    &kp POUND  &kp DLLR   &kp PRCNT      &kp CARET   &kp AMPS   &kp STAR  &none     &kp EQUAL  &kp DEL
+   &kp CAPS   &kp LBRC  &kp LBKT  &kp LPAR   &kp MINUS  &kp GRAVE      &kp BSLH    &kp UNDER  &kp RPAR  &kp RBKT  &kp RBRC   &kp KP_ENTER
+   &kp LCTRL   &none     &none     &none      &none      &none         &kp FSLH    &kp PIPE      &kp HOME  &kp END   &kp PSCRN  &none
+                                  &kp LALT   &mo LOWER  &mo RAISE      &kp LSHIFT  &kp SPACE  &none
+                        >;
+                };
+
+                RAISE { 
+// -----------------------------------------------------------------------------------------
+// | F1  |  F2 |  F3 |  F4 |  F5 |  F6 |   |  F7 |  F8 |  F9 | F10 | F11 | F12 |
+// |     |  1  |  2  |  3  |  4  |  5  |   |  6  |  7  |  8  |  9  |  0  |PGUP |
+// |CALC |     |     |     |     |     |   |     |     |     |  .  |     |PGDN |
+//                   |LALT | LWR | RAI |   |SHIFT|SPACE| BSPC|
+                        bindings = <
+   &kp F1      &kp F2  &kp F3  &kp F4    &kp F5     &kp F6         &kp F7     &kp F8     &kp F9    &kp F10  &kp F11  &kp F12 
+   &none       &kp N1  &kp N2  &kp N3    &kp N4     &kp N5         &kp N6     &kp N7     &kp N8    &kp N9   &kp N0   &kp PG_UP
+   &kp K_CALC  &none   &none   &none     &none      &none          &none      &none      &none     &kp DOT  &none    &kp PG_DN
+                    	       &kp LALT  &mo LOWER  &mo RAISE      &kp LSHIFT  &kp SPACE  &kp BSPC
+                        >;
+                };
+		
+		GAMER1 {
+// -----------------------------------------------------------------------------------------
+// |  T   | TAB |  Q  |  W  |  E  |  R  |   |     |     |     |     |     |     |
+// |  G   |SHIFT|  A  |  S  |  D  |  F  |   |     |     |     |     |     |     |
+// |  B   |LCTRL|  Z  |  X  |  C  |  V  |   |     |     |     |     |     |     |
+//                    | ESC |GAMR2|SPC  |   |GAMR1|     |     |
+                        bindings = <
+   &kp T  &kp TAB     &kp Q  &kp W    &kp E       &kp R          &none        &none  &none  &none  &none  &none
+   &kp G  &kp LSHIFT  &kp A  &kp S    &kp D       &kp F          &none        &none  &none  &none  &none  &none
+   &kp B  &kp LCTRL   &kp Z  &kp X    &kp C       &kp V          &none        &none  &none  &none  &none  &none
+                             &kp ESC  &mo GAMER2  &kp SPACE      &tog GAMER1  &none  &none
+                        >;
+                };
+
+		GAMER2 {
+// -----------------------------------------------------------------------------------------
+// |  Y  |  7  |  8  |  9  |  0  |  P  |   |     |     |     |     |     |     |
+// |  H  |  1  |  2  |  3  |     |  J  |   |     |     |     |     |     |     |
+// | ALT |  4  |  5  |  6  |  I  |  M  |   |     |     |     |     |     |     |
+//                   |     |     |     |   |     |     |     |
+                        bindings = <
+   &kp Y    &kp N7  &kp N8  &kp N9  &kp N0  &kp P      &none  &none  &none  &none  &none  &none
+   &kp H    &kp N1  &kp N2  &kp N3  &none   &kp J      &none  &none  &none  &none  &none  &none
+   &kp LALT  &kp N4  &kp N5  &kp N6  &kp I   &kp M      &none  &none  &none  &none  &none  &none
+                            &none   &none   &none      &none  &none  &none
+                        >;
+                };
+		
+		LOCK {
+// -----------------------------------------------------------------------------------------
+// |CTSFE|TOGHM|FXBRI|FXDIM|     |K_PWR|   | C_PWR|      | UP  |     |GAMER1|BSPC |
+// |CTALD|     |     |CBRUP|CBRDN|     |   | BT0  | LFT  | DWN | RHT |BTNXT |BTCLR|
+// |CMUTE|VOLDN|VOLUP| CPP |PREV |NEXT |   |RGBTOG|RGBEFF|     |     |      |BTLDR|
+//                   |EP_ON|     |     |   |SPACE |      |     |
+                        bindings = <
+    &kp LC(LS(ESC))  &rgbfx RGBFX_TOGGLE(0) &rgbfx RGBFX_BRIGHTEN(0) &rgbfx RGBFX_DIM(0)             &none         &kp K_PWR       &kp C_PWR        &none            &kp UP    &none      &to GAMER1   &kp BSPC 
+    &kp LC(LA(DEL))  &none        &none         &kp C_BRI_UP      &kp C_BRI_DN  &none           &bt BT_SEL 0     &kp LEFT         &kp DOWN  &kp RIGHT  &bt BT_NXT  &bt BT_CLR
+    &kp C_MUTE       &kp C_VOL_DN &kp C_VOL_UP  &kp C_PP          &kp C_PREV    &kp C_NEXT      &rgb_ug RGB_TOG  &rgb_ug RGB_EFF  &none     &none      &none       &bootloader
+                                                &ext_power EP_ON  &none         &none           &kp SPACE        &none            &none
+                        >;
+                };
+        };
+};
