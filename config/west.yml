@@ -10,7 +10,7 @@ manifest:
       revision: main
       import: app/west.yml
     - name: zmk-rgb-fx
-      remote: Whaleman1234
+      remote: crystalplanet
       revision: main
   self:
     path: config
