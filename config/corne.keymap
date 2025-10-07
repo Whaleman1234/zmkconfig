@@ -55,7 +55,6 @@
         };
     };
 };
-#include <dt-bindings/zmk/rgb_fx.h>
 
 / {
     // Define your pixel positions (x, y coordinates)
