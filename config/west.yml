@@ -2,15 +2,10 @@ manifest:
   remotes:
     - name: zmkfirmware
       url-base: https://github.com/Whaleman1234
-    - name: Whaleman1234
-      url-base: https://github.com/Whaleman1234
   projects:
     - name: zmk
       remote: zmkfirmware
       revision: main
       import: app/west.yml
-    - name: zmk-rgb-fx
-      remote: Whaleman1234
-      revision: main
   self:
     path: config
